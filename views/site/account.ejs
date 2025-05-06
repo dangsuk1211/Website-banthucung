@@ -1,0 +1,107 @@
+<%- include('./layout/header') %>
+
+<% if (successMessage && successMessage.length) { %>
+    <div class="alert alert-success">
+      <%= successMessage[0] %>
+    </div>
+  <% } %>
+  
+<div class="container mt-4">
+  <!-- Nav-pills giữ nguyên như bạn đã có -->
+  <ul class="nav nav-pills mb-3" id="accountTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#profile">Thông tin cá nhân</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#orders">Đơn hàng</a>
+    </li>
+  </ul>
+
+  
+  <div class="tab-content">
+    <!-- FORM CẬP NHẬT THÔNG TIN -->
+    <div class="tab-pane fade show active" id="profile">
+      <h4>Thông tin cá nhân</h4>
+      <form action="/cap-nhat-thong-tin.html" method="post" class="border p-3 bg-light">
+        <div class="form-group">
+          <label for="fullname">Họ tên</label>
+          <input type="text" name="fullname" id="fullname" class="form-control"
+                 value="<%= user.fullname %>" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" class="form-control"
+                 value="<%= user.email %>" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Điện thoại</label>
+          <input type="text" name="phone" id="phone" class="form-control"
+                 value="<%= user.phone || '' %>">
+        </div>
+        <!-- Bắt đầu phần đổi mật khẩu -->
+  <hr>
+  <h5>Đổi mật khẩu</h5>
+  <div class="form-group">
+    <label for="currentPassword">Mật khẩu hiện tại</label>
+    <input type="password" name="currentPassword" id="currentPassword"
+           class="form-control" placeholder="Nhập mật khẩu hiện tại">
+  </div>
+  <div class="form-group">
+    <label for="newPassword">Mật khẩu mới</label>
+    <input type="password" name="newPassword" id="newPassword"
+           class="form-control" placeholder="Mật khẩu ít nhất 6 ký tự">
+  </div>
+  <div class="form-group">
+    <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+    <input type="password" name="confirmPassword" id="confirmPassword"
+           class="form-control" placeholder="Nhập lại mật khẩu mới">
+  </div>
+  <!-- Kết thúc phần đổi mật khẩu -->
+        <!-- Bổ sung thêm field nếu cần, ví dụ địa chỉ -->
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+      </form>
+    </div>
+
+    <!-- Tab Đơn hàng -->
+    <div class="tab-pane fade" id="orders">
+      <h4 class="mt-3">Đơn hàng của bạn</h4>
+      <% if (!orders.length) { %>
+        <p>Bạn chưa có đơn hàng nào.</p>
+      <% } else { %>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Đơn hàng</th>
+              <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach((o, i) => { %>
+              <tr>
+                <td><%= i + 1 %></td>
+
+                <!-- Hiển thị tên sp và số lượng -->
+                <td>
+                  <% o.details.forEach(d => { %>
+                    <%= (d.item && d.item.name) || d.name %> (<%= d.quantity %>)<br>
+                  <% }) %>
+                </td>
+
+                <td><%= moment(o.createdAt).format('DD/MM/YYYY') %></td>
+                <td><%= o.total.toLocaleString() %>₫</td>
+
+                <!-- Hiển thị nhãn trạng thái -->
+                <td><%= statusLabels[o.status] %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('./layout/footer') %>
