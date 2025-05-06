@@ -9,11 +9,12 @@ Dự án này là một website thương mại điện tử cho phép người d
 Để cài đặt và chạy dự án này trên máy tính của bạn, hãy làm theo các bước sau:
 
 Clone repository:
- git clone https://github.com/dangsuk1211/Website-banthucung.git
+1 git clone https://github.com/dangsuk1211/Website-banthucung.git
 2 Cài đặt các phụ thuộc:
 Nếu dự án sử dụng Node.js, chạy lệnh sau để cài đặt các phụ thuộc:
 cd Website-banthucung
 npm install
-3.Chạy dự án:
+3.Kết nối database json vào mongoDB compass
+4.Chạy dự án:
 Sau khi cài đặt các phụ thuộc, bạn có thể chạy dự án bằng lệnh:
 npm start
